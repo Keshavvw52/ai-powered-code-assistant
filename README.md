@@ -2,6 +2,9 @@
 
 A full-stack AI coding assistant with a React + TypeScript frontend and a Node.js + Express backend powered by Google's Gemini API.
 
+#deployed link
+https://ai-powered-code-assistant-eta.vercel.app/
+
 ## Features
 
 - Generate code from natural language prompts
