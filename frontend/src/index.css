@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #0f172a;
+  color: white;
+  overflow: hidden;
+}
+
+.ambient-noise {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+  opacity: 0.015;
+}
+
+.ambient-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.22;
+}
+
+.ambient-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(150px);
+  pointer-events: none;
+  animation: ambient-float 10s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+.ambient-blob-a {
+  top: -12%;
+  left: 24%;
+  width: 900px;
+  height: 900px;
+  background: rgba(94, 106, 210, 0.22);
+}
+
+.ambient-blob-b {
+  top: 18%;
+  left: -18%;
+  width: 620px;
+  height: 620px;
+  background: rgba(168, 85, 247, 0.13);
+  animation-duration: 12s;
+}
+
+.ambient-blob-c {
+  right: -12%;
+  top: 10%;
+  width: 760px;
+  height: 760px;
+  background: rgba(59, 130, 246, 0.12);
+  animation-duration: 14s;
+}
+
+@keyframes ambient-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-24px) rotate(1deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-blob {
+    animation: none;
+  }
+}
