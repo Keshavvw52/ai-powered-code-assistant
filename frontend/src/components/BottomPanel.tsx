@@ -1,12 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { Copy, MessageSquareText, ShieldAlert, Sparkles, TestTube2 } from 'lucide-react';
+import { Copy, ShieldAlert, Sparkles } from 'lucide-react';
 import type { ReviewResult } from '../types';
 
-type BottomTab = 'review' | 'console' | 'tests' | 'diff';
+type BottomTab = 'review' | 'diff';
 
 interface BottomPanelProps {
   reviewResult: ReviewResult | null;
-  lastAction: string;
   activeCode: string;
   activeTab: BottomTab;
   onTabChange: (tab: BottomTab) => void;
@@ -14,8 +13,6 @@ interface BottomPanelProps {
 
 const TABS: Array<{ id: BottomTab; label: string }> = [
   { id: 'review', label: 'Review' },
-  { id: 'console', label: 'Console' },
-  { id: 'tests', label: 'Tests' },
   { id: 'diff', label: 'Diff' },
 ];
 
@@ -35,7 +32,7 @@ function StatCard({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-export default function BottomPanel({ reviewResult, lastAction, activeCode, activeTab, onTabChange }: BottomPanelProps) {
+export default function BottomPanel({ reviewResult, activeCode, activeTab, onTabChange }: BottomPanelProps) {
   const [expandedFixId, setExpandedFixId] = useState<string | null>(null);
 
   const reviewStats = useMemo(() => {
@@ -144,26 +141,6 @@ export default function BottomPanel({ reviewResult, lastAction, activeCode, acti
               <ShieldAlert size={26} className="mx-auto mb-3 text-violet-300" />
               <div className="text-sm">Run a review from the AI tools to populate this panel.</div>
             </div>
-          </div>
-        )}
-
-        {activeTab === 'console' && (
-          <div className="h-full rounded-2xl border p-4 font-mono text-sm text-slate-300" style={{ background: '#0d1324', borderColor: '#262b42' }}>
-            <div className="flex items-center gap-2 text-slate-400 mb-3">
-              <MessageSquareText size={16} />
-              <span>Console activity</span>
-            </div>
-            <div>{lastAction || 'No console output yet. Run AI actions to see activity here.'}</div>
-          </div>
-        )}
-
-        {activeTab === 'tests' && (
-          <div className="h-full rounded-2xl border p-4 text-slate-300" style={{ background: '#0d1324', borderColor: '#262b42' }}>
-            <div className="flex items-center gap-2 text-slate-200 mb-3">
-              <TestTube2 size={16} className="text-violet-300" />
-              <span className="font-medium">Tests Panel</span>
-            </div>
-            <div className="text-sm text-slate-400">Generated unit tests and future execution logs can be reviewed here.</div>
           </div>
         )}
 
