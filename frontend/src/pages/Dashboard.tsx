@@ -14,7 +14,7 @@ import StatusBar from '../components/StatusBar';
 import HistoryModal from '../components/HistoryModal';
 import { getLangMeta } from '../lib/languages';
 
-type BottomTab = 'review' | 'console' | 'tests' | 'diff';
+type BottomTab = 'review' | 'diff';
 
 interface DashboardProps {
   onGoHome: () => void;
@@ -24,7 +24,6 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
   const { setActivePanel, getActiveTab, activeTabId, updateTabLanguage, addTab } = useEditorStore();
   const [reviewIssues, setReviewIssues] = useState<ReviewIssue[]>([]);
   const [reviewResult, setReviewResult] = useState<ReviewResult | null>(null);
-  const [lastAction, setLastAction] = useState<string>('');
   const [showHistory, setShowHistory] = useState(false);
   const [cursor, setCursor] = useState({ lineNumber: 1, column: 1 });
   const [isEditorExpanded, setIsEditorExpanded] = useState(false);
@@ -54,18 +53,15 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
 
   const handleShortcut = useCallback((key: string) => {
     setActivePanel(key as any);
-    setLastAction(`${key} triggered`);
 
     // Auto-run for review when shortcut used
     if (key === 'review') {
       const tab = getActiveTab();
       if (tab?.content.trim()) {
-        setLastAction('Running review...');
         api.review({ language: tab.language, code: tab.content })
           .then((data) => {
             setReviewIssues(data.issues);
             setReviewResult(data);
-            setLastAction(`Review: ${data.issues.length} issues found`);
           })
           .catch((err) => toast.error(err.message));
       }
@@ -81,13 +77,11 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
 
     setBottomTab('review');
     setActivePanel('review');
-    setLastAction('Running AI review for current code...');
 
     api.review({ language: tab.language, code: tab.content })
       .then((data) => {
         setReviewIssues(data.issues);
         setReviewResult(data);
-        setLastAction(`Review: ${data.issues.length} issues found`);
         toast.success('Review generated for current code');
       })
       .catch((err) => toast.error(err.message));
@@ -98,7 +92,6 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
       cancelGenerateRef.current?.();
       setIsGenerating(false);
       setGenerationFinishedAt(Date.now());
-      setLastAction('Generation cancelled');
       return;
     }
 
@@ -115,7 +108,6 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
     setGenerationStarted(true);
     setGenerationStartedAt(Date.now());
     setGenerationFinishedAt(null);
-    setLastAction(`Generating ${generateLanguage} ${generateComplexity}...`);
 
     const existingCode =
       tab?.language === generateLanguage && tab.content.trim()
@@ -129,7 +121,6 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
       () => {
         setIsGenerating(false);
         setGenerationFinishedAt(Date.now());
-        setLastAction('Generation completed');
       },
       (err) => {
         setIsGenerating(false);
@@ -143,7 +134,6 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
     if (!generatedCode) return;
     const meta = getLangMeta(generateLanguage);
     addTab(generateLanguage, generatedCode, `generated.${meta.ext}`);
-    setLastAction('Opened generated code in a new editor tab');
     toast.success('Opened in new tab');
   }, [addTab, generateLanguage, generatedCode]);
 
@@ -188,7 +178,6 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
             {!isEditorExpanded && (
               <BottomPanel
                 reviewResult={reviewResult}
-                lastAction={lastAction}
                 activeCode={activeTab?.content || ''}
                 activeTab={bottomTab}
                 onTabChange={setBottomTab}
@@ -222,11 +211,9 @@ export default function Dashboard({ onGoHome }: DashboardProps) {
           }}
           onIssuesChange={(issues) => {
             setReviewIssues(issues);
-            setLastAction(`Review: ${issues.length} issues found`);
           }}
           onReviewResultChange={(result) => {
             setReviewResult(result);
-            if (result) setLastAction(`Review: ${result.issues.length} issues found`);
           }}
         />
       )}

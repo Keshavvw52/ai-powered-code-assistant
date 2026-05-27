@@ -4,7 +4,6 @@ import {
   FileClock,
   FileText,
   Gauge,
-  Home,
   History,
   Languages,
   LogOut,
@@ -23,7 +22,6 @@ const NAV_ITEMS: Array<{
   icon: React.ReactNode;
   panel?: AIPanel;
 }> = [
-  { id: 'home', label: 'Home', icon: <Home size={16} /> },
   { id: 'dashboard', label: 'Dashboard', icon: <Gauge size={16} /> },
   { id: 'review', label: 'Code Review', icon: <ShieldCheck size={16} />, panel: 'review' },
   { id: 'explain', label: 'Explain Code', icon: <BookOpenText size={16} />, panel: 'explain' },
@@ -48,7 +46,10 @@ export default function Sidebar({ onShowHistory, onGoHome }: SidebarProps) {
       className="w-[220px] shrink-0 border-r px-4 py-5 flex flex-col overflow-y-auto"
       style={{ background: '#111626', borderColor: '#262b42' }}
     >
-      <div className="mb-6 flex items-start gap-3">
+      <button
+        onClick={onGoHome}
+        className="mb-6 flex items-start gap-3 text-left transition-opacity hover:opacity-90"
+      >
         <div
           className="h-11 w-11 rounded-2xl flex items-center justify-center shrink-0"
           style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)' }}
@@ -59,7 +60,7 @@ export default function Sidebar({ onShowHistory, onGoHome }: SidebarProps) {
           <div className="text-base font-semibold text-white">AI Code Assistant</div>
           <div className="text-xs text-slate-400 leading-relaxed">Your intelligent coding partner</div>
         </div>
-      </div>
+      </button>
 
       <div className="mb-3 text-[11px] uppercase tracking-[0.18em] text-slate-500">Navigation</div>
       <nav className="space-y-1.5">
@@ -70,11 +71,6 @@ export default function Sidebar({ onShowHistory, onGoHome }: SidebarProps) {
             <button
               key={item.id}
               onClick={() => {
-                if (item.id === 'home') {
-                  onGoHome();
-                  return;
-                }
-
                 if (item.id === 'history') {
                   onShowHistory();
                   return;

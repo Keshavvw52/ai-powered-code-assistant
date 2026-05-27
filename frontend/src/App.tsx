@@ -14,7 +14,7 @@ export default function App() {
   const { isAuthenticated, login, token } = useAuthStore();
   const [checking, setChecking] = useState(true);
   const [guestView, setGuestView] = useState<GuestView>('home');
-  const [appView, setAppView] = useState<AppView>('home');
+  const [appView, setAppView] = useState<AppView>('dashboard');
 
   useEffect(() => {
     // Verify stored token on mount

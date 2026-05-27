@@ -19,7 +19,7 @@ function getClient() {
 export async function generateContent(prompt, options = {}) {
   const client = getClient();
   const model = client.getGenerativeModel({
-    model: 'gemini-flash-latest',
+    model: 'gemini-2.5-flash',
     generationConfig: {
       temperature: options.temperature ?? 0.7,
       maxOutputTokens: options.maxTokens ?? 8192,
@@ -52,7 +52,7 @@ export async function generateContent(prompt, options = {}) {
 export async function streamContent(prompt, res, options = {}) {
   const client = getClient();
   const model = client.getGenerativeModel({
-    model: 'gemini-flash-latest',
+    model: 'gemini-2.5-flash',
     generationConfig: {
       temperature: options.temperature ?? 0.7,
       maxOutputTokens: options.maxTokens ?? 8192,
