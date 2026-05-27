@@ -23,12 +23,16 @@ const allowedOrigins = [
   'http://localhost:3000',
 ];
 
+if (config.frontendUrl) {
+  allowedOrigins.push(config.frontendUrl);
+}
+
 // Security & middleware
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin(origin, callback) {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
+    if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
     return callback(new Error(`CORS blocked for origin: ${origin}`));
