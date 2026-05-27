@@ -3,6 +3,7 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET || 'dev-secret-change-in-production',
   geminiApiKey: process.env.GEMINI_API_KEY || '',
   nodeEnv: process.env.NODE_ENV || 'development',
+  frontendUrl: process.env.FRONTEND_URL || '',
   bcryptRounds: 10,
   jwtExpiry: '7d',
 };

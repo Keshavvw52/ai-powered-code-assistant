@@ -56,9 +56,18 @@ GEMINI_API_KEY=your_gemini_api_key_here
 JWT_SECRET=change_this_to_a_long_random_string_in_production
 PORT=5000
 NODE_ENV=development
+FRONTEND_URL=https://your-frontend.vercel.app
 ```
 
 Note: the frontend Vite dev server proxies `/api` requests to `http://localhost:5000`.
+
+Create `frontend/.env` from `frontend/.env.example` when deploying the frontend separately.
+
+Required frontend variables:
+
+```env
+VITE_API_BASE_URL=https://your-render-backend.onrender.com/api
+```
 
 ## Local Setup
 
