@@ -1,7 +1,8 @@
 // src/lib/api.ts
 import type { Language, ExplainDepth, ReviewResult, ExplainResult, RefactorResult } from '../types';
 
-const BASE = '/api';
+const RENDER_API_BASE = 'https://ai-powered-code-assistant-l4ot.onrender.com/api';
+const BASE = window.location.hostname === 'localhost' ? '/api' : RENDER_API_BASE;
 
 function getHeaders() {
   const token = localStorage.getItem('auth_token');
